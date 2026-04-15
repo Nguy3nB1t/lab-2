@@ -6,38 +6,63 @@ StudentRoll::StudentRoll() {
 }
 
 void StudentRoll::insertAtTail(const Student &s) {
-  // STUB
+  Node *n = new Node;
+  n->s = new Student(s);
+  n->next = NULL;
+  if (tail == NULL) {
+    head = tail = n;
+  } else {
+    tail->next = n;
+    tail = n;
+  }
 }
 
 std::string StudentRoll::toString() const {
-  return "stub";
+  std::string result = "[";
+  for (Node *curr = head; curr != NULL; curr = curr->next) {
+    result += curr->s->toString();
+    if (curr->next != NULL)
+      result += ",";
+  }
+  result += "]";
+  return result;
 }
 
 StudentRoll::StudentRoll(const StudentRoll &orig) {
-  // STUB
   head = tail = NULL;
+  for (Node *curr = orig.head; curr != NULL; curr = curr->next) {
+    insertAtTail(*(curr->s));
+  }
 }
 
 StudentRoll::~StudentRoll() {
-  // STUB
+  Node *curr = head;
+  while (curr != NULL) {
+    Node *temp = curr;
+    curr = curr->next;
+    delete temp->s;
+    delete temp;
+  }
 }
 
 StudentRoll & StudentRoll::operator =(const StudentRoll &right ) {
-  // The next two lines are standard, and you should keep them.
-  // They avoid problems with self-assignment where you might free up 
-  // memory before you copy from it.  (e.g. x = x)
-
   if (&right == this) 
     return (*this);
 
-  // TODO... Here is where there is code missing that you need to 
-  // fill in...
+  Node *curr = head;
+  while (curr != NULL) {
+    Node *temp = curr;
+    curr = curr->next;
+    delete temp->s;
+    delete temp;
+  }
+  head = tail = NULL;
 
+  for (Node *curr = right.head; curr != NULL; curr = curr->next) {
+    insertAtTail(*(curr->s));
+  }
 
-  // KEEP THE CODE BELOW THIS LINE
-  // Overloaded = should end with this line, despite what the textbook says.
   return (*this); 
-  
 }
 
 
